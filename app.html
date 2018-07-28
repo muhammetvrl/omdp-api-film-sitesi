@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Js Camp</title>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+</head>
+<body>
+  
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="index.html">OMDb App</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="movie-search">
+      <a class="btn btn-outline-success my-2 my-sm-0"  id="search">Search</a>
+    </form>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12" id="maindiv">
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<script>
+  $(document).ready(function(){
+    $("#search").focus();
+    
+  var movies =["tt0944947","tt3896198","tt1285016","tt0848228","tt0325980","tt1201607","tt0167260","tt1503007","tt2911666","tt0169333","tt6697582"];
+    var i;
+    var card;
+    for(i=0; i<movies.length; i++){
+     
+    $.getJSON("http://www.omdbapi.com/?i="+movies[i]+"&apikey=bf3e79db",
+    function(veri){
+  
+      var year=veri.Year;
+      var img=veri.Poster;
+      var name=veri.Title;
+
+ 
+
+       card="<div class='card' style='width: 18rem; float:left; height:650px;  margin:20px 10px;'>"+
+            "<img class='card-img-top' alt='Card image cap' id='movie-img' src=' "+veri.Poster+"' style='height:424px;';> "+ 
+            "<div class='card-body' style='max-height:650px;'>"+ 
+              "<h5 class='card-title' id='movie-title'>"+name+"</h5>"+ 
+              "<h6 class='card-title' id='movie-year'>"+year+"</h6>"+ 
+            "<a href='https://www.google.com.tr/search?q="+name+"&source=lnms&tbm=vid&sa=X&ved=0ahUKEwiJzIzkp7DcAhVBECwKHSubAaIQ_AUIDCgD&biw=1920&bih=947' target='_blank' class='btn btn-primary' id='google-search'>Search Google</a>"+ 
+            "</div></div>";
+
+       document.getElementById("maindiv").innerHTML+=card;
+    });  
+  }
+
+});  
+
+ $("#search").click(function(){
+
+var search=$("#movie-search").val();
+
+  $.getJSON("http://www.omdbapi.com/?t="+search+"&apikey=bf3e79db",function(data){
+
+      var searchcard="<div class='card' style='width: 18rem; float: left;'>"+
+        "<img class='card-img-top' alt='Card image cap' id='movie-img' src=' "+data.Poster+"'> "+ 
+        "<div class='card-body'>"+ 
+          "<h5 class='card-title' id='movie-title'>"+data.Title+"</h5>"+ 
+          "<h6 class='card-title' id='movie-year'>"+data.Year+"</h6>"+ 
+        "<a href='https://www.google.com.tr/search?q="+data.Title+"&source=lnms&tbm=vid&sa=X&ved=0ahUKEwiJzIzkp7DcAhVBECwKHSubAaIQ_AUIDCgD&biw=1920&bih=947' target='blank' class='btn btn-primary' id='google-search'>Search Google</a>"+ 
+        "</div></div>";
+        $('#maindiv').html(searchcard);
+
+      });
+    
+
+});
+
+
+  
+ 
+
+
+
+</script>
+  
+</body>
+</html>
